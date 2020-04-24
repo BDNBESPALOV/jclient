@@ -11,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class StarterClient {
     public static void main(String ... args){
         ConfigurableApplicationContext s=  SpringApplication.run(StarterClient.class,args);
-        s.getBean("clientController",ClientController.class).ClientController1();
+
+       // s.getBean("clientController",ClientController.class).ClientController1();
     }
 }
