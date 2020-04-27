@@ -4,13 +4,13 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Welcome freemarker</title>
+    <title>jClient</title>
     <link rel="stylesheet"
           type="text/css" href="<@spring.url '/css/style.css'/>"/>
 </head>
 
 <body>
-<h1>Welcome </h1>
+<h1>jClient </h1>
 <#if message??>
 <h2>${message}</h2>
 </#if>
@@ -23,17 +23,16 @@
             Command: <@spring.formInput "jClient.command" "" "text"/>    <br/>
             <input type="submit" value="Create" />
         </form>
+        <br/>
+        <form method="post"  action="startRSocket" >
+            <button type="submit" name="startRSocket" value="true" >Start</button>
+        </form>
+        <br/>
+        <form method="post"  action="stopRSocket" >
+            <button type="submit" name="stopRSocket" value="true" >Stop</button>
+        </form>
+
     </fieldset>
-</div>
-<div>
-    <button method="post"  action="test"  type="submit" >test</button>
-    <form method="post"  action="startRSocket" >
-        <button type="submit" name="startRSocket" value="true" >Start</button>
-    </form>
-    <br/>
-    <form method="post"  action="stopRSocket" >
-        <button type="submit" name="stopRSocket" value="true" >Stop</button>
-    </form>
 </div>
 
 

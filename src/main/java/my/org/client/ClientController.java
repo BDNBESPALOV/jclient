@@ -40,55 +40,61 @@ public class ClientController {
 
     public void startSocket() throws SocketException {
 
-
-//        );
         try {
              socket = new Socket(serverIP, serverPort);
              in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              out = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
 
-            out.println("clientSP1");
-            System.out.println("clientSP1: "+socket);
-            System.out.println("getInetAddress() "+socket.getInetAddress()+"\n"+
-                "getKeepAlive "+socket.getKeepAlive()+"\n"+
-                    "getChannel "+socket.getChannel()+"\n"+
-                    "getOOBInline "+socket.getOOBInline()+"\n"
-            );
+            out.println("clientSP2");
+//            System.out.println("clientSP2: "+socket);
+//            System.out.println("getInetAddress() "+socket.getInetAddress()+"\n"+
+//                "getKeepAlive "+socket.getKeepAlive()+"\n"+
+//                    "getChannel "+socket.getChannel()+"\n"+
+//                    "getOOBInline "+socket.getOOBInline()+"\n"
+//            );
 
-
-//            while (true){
-//                tempMessage=in.readLine();
-//                if(command!=null){
-//                    System.out.println("commandM:  "+command);
-//                    out.println(command);
-//                    command=null;
+//            if (tempMessage.contains("Command:"))   {
+//                    System.out.println("contains(Command:) tempMessage: "+tempMessage);
+//                    tempMessage = tempMessage.substring(8,tempMessage.length());
+//                    System.out.println("tempMessage.substring(0,7): "+tempMessage);
+//
+//                    Runtime rt = Runtime.getRuntime();
+//                    Process proc = rt.exec(tempMessage);
 //                }
-////                if(tempMessage.equals("Hi")){
-////                    log.debug("Successful server connection serverIP: "+serverIP +" serverPort: "+serverPort);
-////                    System.out.println("Successful server connection serverIP: "+serverIP +" serverPort: "+serverPort);
-////                }
-////
-////                if(tempMessage.equals("END") || tempMessage.equals("end")){
-////                    log.debug("Connection serverIP: "+serverIP +" serverPort: "+serverPort+" closed...");
-////                    System.out.println("Connection serverIP: "+serverIP +" serverPort: "+serverPort+" closed...");
-////                    break;
-////                }else if (tempMessage.contains("Command:"))   {
-////                    System.out.println("contains(Command:) tempMessage: "+tempMessage);
-////                    tempMessage = tempMessage.substring(8,tempMessage.length());
-////                    System.out.println("tempMessage.substring(0,7): "+tempMessage);
-////
-////                    Runtime rt = Runtime.getRuntime();
-////                    Process proc = rt.exec(tempMessage);
-////                }
-//            }
+
         }catch (IOException e){
             e.getStackTrace();
         }
+
+        new Thread(
+                () -> {
+                    try {
+                        socket = new Socket(serverIP, serverPort);
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        out = new PrintWriter(new BufferedWriter(
+                                new OutputStreamWriter(socket.getOutputStream())), true);
+                        out.println("clientSP2");
+                        String inputLine;
+                        while ((inputLine = in.readLine()) != null) {
+                            System.out.println("inputLine: " + inputLine);
+                            if (".".equals(inputLine)) {
+                                out.println("bye");
+                                break;
+                            }
+
+                        }
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        ).start();
     }
 
     public void stopSocket() throws IOException {
-        out.println("Disconnect clientSP1");
+        out.println("Disconnect SP2");
         socket.close();
     }
 
@@ -129,12 +135,5 @@ public class ClientController {
         System.out.println("startSocket");
         return "redirect:/";
     }
-    @PostMapping("test")
-    public  String test(){
-        System.out.println("test");
-        return "redirect:/";
-    }
-
-
 
 }
