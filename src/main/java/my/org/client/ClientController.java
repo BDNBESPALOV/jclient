@@ -46,8 +46,8 @@ public class ClientController {
              out = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
 
-            out.println("clientSP2");
-//            System.out.println("clientSP2: "+socket);
+            out.println("clientSP1");
+//            System.out.println("clientSP1: "+socket);
 //            System.out.println("getInetAddress() "+socket.getInetAddress()+"\n"+
 //                "getKeepAlive "+socket.getKeepAlive()+"\n"+
 //                    "getChannel "+socket.getChannel()+"\n"+
@@ -74,10 +74,33 @@ public class ClientController {
                         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         out = new PrintWriter(new BufferedWriter(
                                 new OutputStreamWriter(socket.getOutputStream())), true);
-                        out.println("clientSP2");
-                        String inputLine;
+
+                        /*отправляем название экземпляра клиента, для регистрации его в таблицы клиентов */
+                        out.println("clientSP1");
+
+                        String inputLine; /*в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
+
                             System.out.println("inputLine: " + inputLine);
+
+                        if (tempMessage.contains("Command:"))   { /*проверяем, что от сервера пришла команда для исполнения */
+
+                            tempMessage = tempMessage.substring(8,tempMessage.length());
+
+                             Runtime.getRuntime().exec(tempMessage);
+                        }else if (tempMessage.contains("monitoringProcess:"))   { /*проверяем, что от сервера пришла команда для monitoringProcess */
+
+                                tempMessage = tempMessage.substring(18,tempMessage.length());
+
+                                Runtime.getRuntime().exec(tempMessage);
+
+
+
+                            }
+
+
+
+
                             if (".".equals(inputLine)) {
                                 out.println("bye");
                                 break;
@@ -94,7 +117,7 @@ public class ClientController {
     }
 
     public void stopSocket() throws IOException {
-        out.println("Disconnect SP2");
+        out.println("Disconnect SP1");
         socket.close();
     }
 
