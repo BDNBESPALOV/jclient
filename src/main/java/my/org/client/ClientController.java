@@ -1,12 +1,6 @@
 package my.org.client;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,147 +10,49 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
-
-@Controller
 public class ClientController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ClientController.class);
 
-    @Value("${connect.serverPort}")
-    private int serverPort;
-
-    @Value("${connect.serverIP}")
-    private String serverIP;
-
-    private String tempMessage;
-
-    private String command;
-    private Socket socket;
-    PrintWriter out;
-    BufferedReader in;
-
-    public void startSocket() throws SocketException {
-
-        try {
-             socket = new Socket(serverIP, serverPort);
-             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             out = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream())), true);
-
-            out.println("clientSP1");
-//            System.out.println("clientSP1: "+socket);
-//            System.out.println("getInetAddress() "+socket.getInetAddress()+"\n"+
-//                "getKeepAlive "+socket.getKeepAlive()+"\n"+
-//                    "getChannel "+socket.getChannel()+"\n"+
-//                    "getOOBInline "+socket.getOOBInline()+"\n"
-//            );
-
-//            if (tempMessage.contains("Command:"))   {
-//                    System.out.println("contains(Command:) tempMessage: "+tempMessage);
-//                    tempMessage = tempMessage.substring(8,tempMessage.length());
-//                    System.out.println("tempMessage.substring(0,7): "+tempMessage);
-//
-//                    Runtime rt = Runtime.getRuntime();
-//                    Process proc = rt.exec(tempMessage);
-//                }
-
-        }catch (IOException e){
-            e.getStackTrace();
-        }
+    public void startSocket( String name, String serverIP,
+            int serverPort) throws SocketException {
 
         new Thread(
                 () -> {
-                    try {
-                        socket = new Socket(serverIP, serverPort);
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        out = new PrintWriter(new BufferedWriter(
-                                new OutputStreamWriter(socket.getOutputStream())), true);
-
+                    try(
+                            Socket socket = new Socket(serverIP, serverPort);
+                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                            PrintWriter out = new PrintWriter(new BufferedWriter(
+                                    new OutputStreamWriter(socket.getOutputStream())), true)
+                            ) {
                         /*отправляем название экземпляра клиента, для регистрации его в таблицы клиентов */
-                        out.println("clientSP1");
-
+                        out.println("client"+name);
                         String inputLine; /*в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
 
                             System.out.println("inputLine: " + inputLine);
 
-                        if (tempMessage.contains("Command:"))   { /*проверяем, что от сервера пришла команда для исполнения */
+                            /*проверяем, что от сервера пришла команда для исполнения */
+                        if (inputLine.contains("Command:"))   {
+                            inputLine = inputLine.substring(8,inputLine.length());
 
-                            tempMessage = tempMessage.substring(8,tempMessage.length());
+                             Runtime.getRuntime().exec(inputLine);
 
-                             Runtime.getRuntime().exec(tempMessage);
-                        }else if (tempMessage.contains("monitoringProcess:"))   { /*проверяем, что от сервера пришла команда для monitoringProcess */
-
-                                tempMessage = tempMessage.substring(18,tempMessage.length());
-
-                                Runtime.getRuntime().exec(tempMessage);
-
-
-
+                            /*проверяем, что от сервера пришла команда для monitoringProcess */
+                        }else if (inputLine.contains("monitoringProcess:"))   {
+                            new PrintProcess().process(out);
                             }
-
-
-
-
-                            if (".".equals(inputLine)) {
-                                out.println("bye");
-                                break;
-                            }
-
+                        else if (inputLine.contains("Killed: ")){
+                            new KillProcess().kill(inputLine.substring(8));
+                        }
                         }
 
 
-                    } catch (IOException e) {
+                    }  catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
         ).start();
-    }
-
-    public void stopSocket() throws IOException {
-        out.println("Disconnect SP1");
-        socket.close();
-    }
-
-    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
-    public String index(Model model) {
-        JClient jClient = new JClient();
-        model.addAttribute("jClient", jClient);
-        return "index";
-    }
-    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.POST)
-    public String getCommand(Model model, //
-                            @ModelAttribute("jClient") JClient jClient
-    )  {
-        command = jClient.getCommand();
-        System.out.println("to server: "+command);
-        out.println(command);
-        return "index";
-    }
-
-
-    @RequestMapping(value = {"/stopRSocket" }, method = RequestMethod.POST)
-    public  String stopRSocket(){
-        try {
-            stopSocket();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("stopSocket");
-        return "redirect:/";
-    }
-    @PostMapping("startRSocket")
-    public  String startRSocket(){
-        try {
-            startSocket();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        System.out.println("startSocket");
-        return "redirect:/";
     }
 
 }

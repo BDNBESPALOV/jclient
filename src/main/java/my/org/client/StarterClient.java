@@ -1,15 +1,14 @@
 package my.org.client;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.net.SocketException;
 
 
-import org.springframework.context.ConfigurableApplicationContext;
 
-
-@SpringBootApplication
 public class StarterClient {
-    public static void main(String ... args){
-        ConfigurableApplicationContext configurableApplicationContext =  SpringApplication.run(StarterClient.class,args);
+    public static void main(String ... args) throws SocketException {
+        String name="SP1",serverIP="192.168.56.101";
+        int serverPort=8181;
+        ClientController clientController = new ClientController();
+        clientController.startSocket(name, serverIP, serverPort);
     }
 }
