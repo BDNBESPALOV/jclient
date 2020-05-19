@@ -19,7 +19,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!--Plugins-->
+
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <!--Libs-->
         <log4j-slf4j-impl.version>2.12.1</log4j-slf4j-impl.version>

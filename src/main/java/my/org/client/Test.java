@@ -1,50 +1,39 @@
 package my.org.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.Properties;
 
 public class Test {
 
-    public static void main(String [] args){
-//        try {
-//            Runtime.getRuntime().exec("");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public static void main(String [] args) throws IOException {
 
-        try {
+        Process p = Runtime.getRuntime().exec("/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh");
 
-            ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "ps -e --format='pid cmd'|grep java > ps.log");
-            System.out.println(".......");
+        InputStream in = p.getInputStream();
+        OutputStream outputStream = p.getOutputStream();
+        String line;
+        BufferedReader inb = new BufferedReader(new InputStreamReader(in));
 
-            Process process = processBuilder.start();
-//
-//            StringBuilder output = new StringBuilder();
-//
-//            BufferedReader reader = new BufferedReader(
-//                    new InputStreamReader(process.getInputStream()));
-//
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                output.append(line + "\n");
-//            }
 
-            int exitVal = process.waitFor();
-//            if (exitVal == 0) {
-//                System.out.println("Success!");
-//                System.out.println(output);
-//                System.exit(0);
-//            } else {
-//                //abnormal...
-//            }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        String inputLine; /*в цикле считываем сообщения от сервера */
+        while ((inputLine = inb.readLine()) != null) {
+
+            if(inputLine.contains("Found")){
+                System.out.println("FoundFoundFoundFound");
+
+                line = "Y" + "\n";
+                outputStream.write(line.getBytes());
+                outputStream.flush();
+
+            }
+
+            System.out.println(inputLine);
         }
+
+
+
     }
 
 }

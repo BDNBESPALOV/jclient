@@ -1,14 +1,39 @@
 package my.org.client;
 
+
+import org.slf4j.Logger;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.SocketException;
-
-
+import java.util.Properties;
 
 public class StarterClient {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(StarterClient.class);
     public static void main(String ... args) throws SocketException {
-        String name="SP1",serverIP="192.168.56.101";
-        int serverPort=8181;
-        ClientController clientController = new ClientController();
-        clientController.startSocket(name, serverIP, serverPort);
+        FileInputStream fis;
+        Properties property = new Properties();
+        String name,serverIP;
+        int serverPort;
+
+        try {
+            /*A:\temp*/
+            fis = new FileInputStream("A:\\temp\\Client.properties");
+            property.load(fis);
+            name = property.getProperty("client.name");
+            serverIP = property.getProperty("server.ip");
+            serverPort = Integer.parseInt(property.getProperty("server.port"));
+
+            System.out.println("client.name "+property.getProperty("client.name"));
+            System.out.println("server.port "+property.getProperty("server.port"));
+            System.out.println("server.ip "+property.getProperty("server.ip"));
+            log.debug("server.ip "+property.getProperty("server.ip"));
+
+            ClientController clientController = new ClientController();
+            clientController.startSocket(name, serverIP, serverPort);
+        }catch (IOException e){
+            System.err.println("ERROR: Файл свойств отсуствует!");
+        }
+
     }
 }
