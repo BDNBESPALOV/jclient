@@ -17,4 +17,7 @@ public class JClient {
         public void setCommand(String command){
             this.command = command;
         }
+
+
+
 }

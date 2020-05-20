@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class ClientController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ClientController.class);
 
     public void startSocket( String name, String serverIP,
-            int serverPort) throws SocketException {
-
+            int serverPort)  {
+            String inputLine;
+            ProcessModel processModel = new ProcessModel();
 //        new Thread(
 //                () -> {
                     try(
@@ -26,32 +26,35 @@ public class ClientController {
                             PrintWriter out = new PrintWriter(new BufferedWriter(
                                     new OutputStreamWriter(socket.getOutputStream())), true)
                             ) {
+
                         /*отправляем название экземпляра клиента, для регистрации его в таблицы клиентов */
-                        System.out.println("socket.isConnected() "+socket.isConnected());
-                        System.out.println("socket.isClosed() "+socket.isClosed());
-                        System.out.println("socket.isBound() "+socket.isBound());
-
-
                         out.println("client"+name);
-                        String inputLine; /*в цикле считываем сообщения от сервера */
-                        while ((inputLine = in.readLine()) != null) {
 
+                        /*в цикле считываем сообщения от сервера */
+                        while ((inputLine = in.readLine()) != null) {
                             System.out.println("inputLine: " + inputLine);
 
-                            /*проверяем, что от сервера пришла команда для исполнения */
+                        /*проверяем, что от сервера пришла команда для исполнения */
                         if (inputLine.contains("Command:"))   {
                             inputLine = inputLine.substring(8,inputLine.length());
-
                             Runtime.getRuntime().exec(inputLine);
 
-
-                            /*проверяем, что от сервера пришла команда для monitoringProcess */
+                        /*проверяем, что от сервера пришла команда для monitoringProcess */
                         }else if (inputLine.contains("monitoringProcess:"))   {
-                            new PrintProcess().process(out);
+                            processModel.process(out);
                             }
+                        /* проверяем, что от сервера пришла команда на удаление процесса */
                         else if (inputLine.contains("Killed: ")){
-                            new KillProcess().kill(inputLine.substring(8));
+                            processModel.killProcess(inputLine.substring(8));
                         }
+
+                        /* проверяем, что от сервера пришла команда на обновление SP */
+                        else if (inputLine.contains("UpdateSP: ")){
+
+                            processModel.updateSP(inputLine.substring(10),out);
+
+                        }
+
                         }
 
 
