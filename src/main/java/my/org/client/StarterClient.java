@@ -18,7 +18,7 @@ public class StarterClient {
 
         try {
             /*A:\temp*/
-            fis = new FileInputStream("A:\\temp\\Client.properties");
+            fis = new FileInputStream("D:\\TEMP\\Client.properties");
             property.load(fis);
             name = property.getProperty("client.name");
             serverIP = property.getProperty("server.ip");

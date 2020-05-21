@@ -48,19 +48,22 @@ public class ClientController {
                             processModel.killProcess(inputLine.substring(8));
                         }
 
+                        /* проверяем, что от сервера пришла команда на загрузку патча */
+                        else if (inputLine.contains("accept file")){
+
+                            System.out.println("accept file : " + inputLine);
+                            new UploadFile(initSocket(serverIP,serverPort));
+
+                        }
+
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
 
                             processModel.updateSP(inputLine.substring(10),out);
 
-                        }
-                        /* проверяем, что от сервера пришла команда на загрузку патча */
-                        else if (inputLine.contains("accept file")){
-
-
-
 
                         }
+
 
                         }
 
