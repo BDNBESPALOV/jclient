@@ -54,6 +54,13 @@ public class ClientController {
                             processModel.updateSP(inputLine.substring(10),out);
 
                         }
+                        /* проверяем, что от сервера пришла команда на загрузку патча */
+                        else if (inputLine.contains("accept file")){
+
+
+
+
+                        }
 
                         }
 
