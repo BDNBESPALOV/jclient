@@ -5,12 +5,11 @@ import org.slf4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.SocketException;
 import java.util.Properties;
 
 public class StarterClient {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(StarterClient.class);
-    public static void main(String ... args) throws SocketException {
+    public static void main(String ... args)  {
         FileInputStream fis;
         Properties property = new Properties();
         String name,serverIP;
@@ -18,7 +17,7 @@ public class StarterClient {
 
         try {
             /*A:\temp*/
-            fis = new FileInputStream("D:\\TEMP\\Client.properties");
+            fis = new FileInputStream("Client.properties");
             property.load(fis);
             name = property.getProperty("client.name");
             serverIP = property.getProperty("server.ip");

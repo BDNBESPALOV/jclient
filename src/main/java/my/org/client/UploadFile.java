@@ -1,22 +1,35 @@
 package my.org.client;
 
-
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
+import java.util.Date;
+import java.util.Properties;
+
 
 public class UploadFile {
-    File f=new File("D:\\TEMP\\file.zip");
-    Socket clientSocket;
+    //патч AZK запокованный
+    String patchAZKzip = "D:\\TEMP\\file.zip";
+    //папка содержащия распакованный патч
+    String patchAZK = patchAZKzip.replaceAll(".zip(.*)","");
 
-    UploadFile(Socket socket) throws FileNotFoundException {
-        this.clientSocket = socket;
+    File f=new File(patchAZKzip);
+
+
+    byte  [] byteArray;
+    UploadFile(Socket socket)  {
+        File tempFolder = new File("tempPatchFolder");
+        if (!tempFolder.exists()){
+            tempFolder.mkdir();
+        }
+
+
+
         try(
-                InputStream in = socket.getInputStream();
+
                 PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-
-                BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream(), 8192)
+                BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("tempPatchFolder/path.zip"));
 
         ) {
 
@@ -24,7 +37,35 @@ public class UploadFile {
             System.out.println(" ответил clientAdminFile");
             out.println("clientAdminFile");
 
+            byteArray = new byte[8192];
+            int in;
+            while ((in = bis.read(byteArray)) != -1){
+                System.out.println("."+new Date());
+                bos.write(byteArray,0,in);
+            }
 
+            socket.close();
+
+            // определение пути к СП куда следует поместить файлы патча
+            FileInputStream fis = new FileInputStream("Client.properties");
+            Properties property = new Properties();
+            property.load(fis);
+            String homeSP = property.getProperty("sp.home");
+
+            String copyCommand = "cp -R -f -v ./"+patchAZK+"/* "+homeSP;
+
+            Process process = Runtime.getRuntime().exec(new String[]{"/bin/sh","-c",copyCommand} );
+
+            //мониторинг процесса копирования
+            BufferedReader inb = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String inputLine;
+            /*в цикле считываем сообщения от оболочки linux */
+            while ((inputLine = inb.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+
+            System.out.println(" загрузка завершена ");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -32,30 +73,6 @@ public class UploadFile {
 
     }
 
-    private void recieveFile(String filename) {
-        try {
-            System.out.println("Start");
-//            int s;
-//            s = Integer.parseInt(in.readLine());
-            byte[] byteArray = new byte[8192];
-            BufferedInputStream bis = new BufferedInputStream(clientSocket.getInputStream(), 8192*100);
-            File f = new File(filename);
-            f.createNewFile();
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(f));
-            int i;
 
-            while (s > 0) {
-                i = bis.read(byteArray);
-                bos.write(byteArray, 0, i);
-                s--;
-            }
-            bos.close();
-            System.out.println("321");
-        } catch (IOException e) {
-            System.err.println("Recieve IO Error");
-        }
-
-        System.out.println("Recieved");
-    }
 
 }

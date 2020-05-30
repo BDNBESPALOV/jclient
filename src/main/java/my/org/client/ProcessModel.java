@@ -60,7 +60,8 @@ public class ProcessModel {
         String inputLine;
         String line ;
 
-        Process p = Runtime.getRuntime().exec(pathUpdate);
+       // Process p = Runtime.getRuntime().exec(pathUpdate);
+        Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","dir"});
 
         InputStream in = p.getInputStream();
         OutputStream outputStream = p.getOutputStream();
