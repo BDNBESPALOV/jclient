@@ -56,17 +56,18 @@ public class ProcessModel {
         }
     }
 
-    public void updateSP(String inController, PrintWriter outController) throws IOException {
+    public void executeSQLScript(String inController, PrintWriter outController) throws IOException {
         String inputLine;
         String line ;
 
        // Process p = Runtime.getRuntime().exec(pathUpdate);
-        Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","dir"});
+
+        Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
 
         InputStream in = p.getInputStream();
         OutputStream outputStream = p.getOutputStream();
 
-        BufferedReader inb = new BufferedReader(new InputStreamReader(in));
+        BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 
 
         /*в цикле считываем сообщения от SP */

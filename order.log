@@ -1,0 +1,306 @@
+26.02.20 11:56:18.182,main,INFO,Executer,SQLExecuter started up at Wed Feb 26 11:56:18 MSK 2020
+26.02.20 11:56:18.307,main,INFO,ConnectionFactory,Using database url="jdbc:oracle:thin:@172.28.176.11:1521:azk", user="STEND40_GZ_BELGOBL", pool size=150
+26.02.20 11:56:43.162,main,INFO,PerformTrigger,375 triggers dropped
+26.02.20 11:56:46.723,main,INFO,ExecSql,Script: 1097_m.gorin_servererror_add_type.sql
+26.02.20 11:56:46.752,main,INFO,ExecSql,Line 2: 
+INSERT INTO DBUpdate(id,author,description,update_date)
+  VALUES (1097,'m.gorin','Добавление поля AZK_CODE_TYPE в SERVERERROR',SYSDATE)
+26.02.20 11:56:46.781,main,INFO,ExecSql,Line 6: 
+alter table SERVERERROR add AZK_CODE_TYPE numeric(15,0)
+26.02.20 11:56:46.979,main,INFO,ExecSql,Statements found: 2, done: 2
+26.02.20 11:56:46.979,main,INFO,ExecSql,Script: ./LOG/14001_ddyldaev_recipient_id_in_claimdoc.sql
+26.02.20 11:56:46.980,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14001, 'ddyldaev', 'ЭД Иск, ЭД Претензия - поле Получатель', SYSDATE)
+26.02.20 11:56:46.984,main,INFO,ExecSql,Line 6: 
+ALTER TABLE ClaimDoc ADD Recipient_Id numeric(15) constraint fk_claimdoc_recipient references org
+26.02.20 11:56:47.072,main,INFO,ExecSql,Line 8: 
+ALTER TABLE ClaimDoc ADD Recipient_Name varchar(2000)
+26.02.20 11:56:47.086,main,INFO,ExecSql,Line 10: 
+UPDATE ClaimDoc cld SET Recipient_Id = (select coalesce(cd.recipient_id, cd.customer_id)
+  from document d
+  join contractdoc cd on cd.document_id = d.parent_id
+  where d.id = cld.document_id)
+26.02.20 11:57:33.249,main,INFO,ExecSql,Line 15: 
+UPDATE ClaimDoc cld SET Recipient_Name = (select o.description from org o where o.id = cld.Recipient_Id)
+26.02.20 11:57:33.991,main,INFO,ExecSql,Statements found: 5, done: 5
+26.02.20 11:57:33.991,main,INFO,ExecSql,Script: ./LOG/14002_ddyldaev_new_fields_in_contractexecdoc_factdoc.sql
+26.02.20 11:57:33.992,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14002, 'ddyldaev', 'ЭД Сведения об исполнении контрактов, ЭД Факт поставки - новые поля', SYSDATE)
+26.02.20 11:57:34.001,main,INFO,ExecSql,Line 6: 
+ALTER TABLE ContractExecDoc ADD Recipient_Id numeric(15) constraint fk_contractexecdoc_recipient references org
+26.02.20 11:57:34.031,main,INFO,ExecSql,Line 8: 
+ALTER TABLE ContractExecDoc ADD Recipient_Name varchar(2000)
+26.02.20 11:57:34.045,main,INFO,ExecSql,Line 10: 
+UPDATE ContractExecDoc ced SET ced.Recipient_Id = (select coalesce(cd.recipient_id, cd.customer_id)
+  from document d
+  join contractdoc cd on cd.document_id = d.parent_id
+  where d.id = ced.document_id)
+26.02.20 12:08:06.650,main,INFO,ExecSql,Line 15: 
+UPDATE ContractExecDoc ced SET ced.Recipient_Name = (select o.description from org o where o.id = ced.Recipient_Id)
+26.02.20 12:08:21.784,main,INFO,ExecSql,Line 18: 
+ALTER TABLE FactDoc ADD Customer_Id numeric(15) constraint fk_factdoc_customer references org
+26.02.20 12:08:21.829,main,INFO,ExecSql,Line 20: 
+ALTER TABLE FactDoc ADD Customer_Name varchar(2000)
+26.02.20 12:08:21.874,main,INFO,ExecSql,Line 22: 
+UPDATE FactDoc fd SET fd.Customer_Id = (select cd.customer_id
+  from document d
+  join contractdoc cd on cd.document_id = d.parent_id
+  where d.id = fd.document_id)
+26.02.20 12:14:19.443,main,INFO,ExecSql,Line 27: 
+UPDATE FactDoc fd SET fd.Customer_Name = (select o.description from org o where o.id = fd.Customer_Id)
+26.02.20 12:15:28.786,main,INFO,ExecSql,Statements found: 9, done: 9
+26.02.20 12:15:28.786,main,INFO,ExecSql,Script: ./LOG/14003_zholokh_goodscatunit_mark.sql
+26.02.20 12:15:28.787,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14003, 'zholokh', 'Признак для отображения единицы измерения в списке КТРУ таблицы "Единицы измерения"', SYSDATE)
+26.02.20 12:15:28.791,main,INFO,ExecSql,Line 5: 
+ALTER TABLE GoodsCatUnit ADD isDisplay NUMERIC(1) DEFAULT 0 CONSTRAINT ck_goodscatunit_isdisplay CHECK (isDisplay IN (0,1))
+26.02.20 12:15:30.618,main,INFO,ExecSql,Line 7: 
+UPDATE GoodsCatUnit gcu SET isDisplay=1
+      WHERE gcu.id = (SELECT Min(gcu2.Id) FROM GoodsCatUnit gcu2 where gcu2.GoodsCat_Id = gcu.GoodsCat_Id GROUP BY gcu2.GoodsCat_Id)
+26.02.20 12:15:36.242,main,INFO,ExecSql,Line 10: 
+CREATE INDEX Idx_GoodsCat_GoodsCatUnit ON GoodsCatUnit(GoodsCat_id, isDisplay)
+26.02.20 12:15:36.301,main,INFO,ExecSql,Statements found: 4, done: 4
+26.02.20 12:15:36.301,main,INFO,ExecSql,Script: ./LOG/14004_zholokh_cs_split_reqs_by_npa.sql
+26.02.20 12:15:36.301,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14004, 'zholokh', 'Разделение запретов и ограничений по разным НПА. Консолидированная закупка.', SYSDATE)
+26.02.20 12:15:36.305,main,INFO,ExecSql,Line 6: 
+create table CSFEATUREGOODSBANLINE (
+  CONSOLID_ID          NUMERIC(15)    not null,
+  FEATUREPOS           NUMERIC(15)    not null,
+  SEQORDER             NUMERIC(15)    not null,
+  GOODSBAN_ID          NUMERIC(15)    not null,
+  constraint PK_CSFEATUREBANLINE primary key (CONSOLID_ID, FEATUREPOS, SEQORDER),
+  constraint FK_CSFEATUREBANLINE_CSDOC foreign key (CONSOLID_ID) references CONSOLIDDOC (ID),
+  constraint FK_CSFEATUREBANLINE_CSFEATURE foreign key (CONSOLID_ID, FEATUREPOS) references CSFEATURE (CONSOLID_ID, POS),
+  constraint FK_CSFEATUREBANLINE_GOODSBAN foreign key (GOODSBAN_ID) references GOODSBAN
+)
+26.02.20 12:15:36.353,main,INFO,ExecSql,Statements found: 2, done: 2
+26.02.20 12:15:36.353,main,INFO,ExecSql,Script: ./LOG/14005_ddyldaev_claim_fields_enlarge.sql
+26.02.20 12:15:36.354,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14005, 'ddyldaev', 'Увеличение длины полей в ЭД Иск, Претензия', SYSDATE)
+26.02.20 12:15:36.357,main,INFO,ExecSql,Line 8: 
+ALTER TABLE CLAIMPAYFACT MODIFY CAPTION VARCHAR(1000)
+26.02.20 12:15:36.413,main,INFO,ExecSql,Line 12: 
+ALTER TABLE CLAIMPENALTYCHANGEDOCINFO MODIFY CAPTION VARCHAR(1000)
+26.02.20 12:15:36.418,main,INFO,ExecSql,Statements found: 3, done: 3
+26.02.20 12:15:36.418,main,INFO,ExecSql,Script: ./LOG/14006_ddyldaev_budgetchild.sql
+26.02.20 12:15:36.420,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14006, 'ddyldaev', 'Создание линейных представлений для BUDGET и GOODSOKPD', SYSDATE)
+26.02.20 12:15:36.424,main,INFO,ExecSql,Line 6: 
+CREATE TABLE BudgetChild (
+  budget_id numeric(15) not null constraint fk_budgetchildchild_budget references budget(id),
+  child_id numeric(15) not null constraint fk_budgethildbudget_budget references budget(id),
+  constraint pk_budgetchild primary key (budget_id, child_id)
+)
+26.02.20 12:15:36.440,main,INFO,ExecSql,Line 148: 
+CREATE OR REPLACE PROCEDURE BUDGETCHILD_FILL
+AS
+BEGIN
+  DELETE FROM budgetchild;
+  FOR cur IN
+    (SELECT id FROM budget
+      START WITH parent_id is NULL
+      CONNECT BY parent_id = prior id AND parent_id <> id)
+  LOOP
+    INSERT INTO budgetchild(budget_id, child_id)
+      SELECT parent_id, id FROM budget WHERE parent_id = cur.id AND parent_id <> id;
+    INSERT INTO budgetchild(budget_id, child_id)
+      SELECT budget_id, id FROM budgetchild, budget
+        WHERE child_id = parent_id AND child_id = cur.id;
+  END LOOP;
+END;
+26.02.20 12:15:36.503,main,INFO,ExecSql,Line 167: 
+BEGIN
+  budgetchild_fill;
+END;
+26.02.20 12:15:36.668,main,INFO,ExecSql,Line 172: 
+CREATE OR REPLACE TRIGGER ins_budgetchild AFTER INSERT
+ ON budget FOR EACH ROW 
+BEGIN
+  IF (:NEW.parent_id IS NOT NULL) THEN
+    INSERT INTO budgetchild(budget_id, child_id)
+      VALUES(:NEW.parent_id, :NEW.id);
+    FOR cur IN (SELECT budget_id FROM budgetchild
+                WHERE child_id = :NEW.parent_id)
+    LOOP
+      INSERT INTO budgetchild(budget_id, child_id)
+         VALUES (cur.budget_id, :NEW.id);
+    END LOOP;
+  END IF;
+END;
+26.02.20 12:15:36.678,main,INFO,ExecSql,Line 189: 
+CREATE OR REPLACE TRIGGER upd_budgetchild AFTER UPDATE
+ ON budget FOR EACH ROW 
+DECLARE 
+  topid numeric;
+BEGIN
+  IF (:new.parent_id IS NOT NULL) THEN
+    IF (:old.parent_id IS NOT NULL) THEN
+      IF (:new.parent_id <> :old.parent_id) THEN
+        SELECT DISTINCT budget_id INTO topid FROM budgetchild 
+          WHERE budget_id NOT IN (SELECT child_id FROM budgetchild);  
+        DELETE FROM budgetchild 
+          WHERE budget_id IN (SELECT budget_id FROM budgetchild WHERE child_id = :old.parent_id AND budget_id <> topid)
+            AND ((child_id = :new.id) OR child_id IN (SELECT child_id FROM budgetchild WHERE budget_id = :new.id));
+        IF (:new.parent_id = topid) THEN
+          DELETE FROM budgetchild WHERE 
+            budget_id = :old.parent_id AND (child_id = :new.id OR child_id IN
+              (SELECT child_id FROM budgetchild WHERE budget_id = :new.id));
+        ELSE
+          IF (:old.parent_id = topid) THEN
+            INSERT INTO budgetchild(budget_id, child_id)
+              SELECT (SELECT :new.parent_id FROM dual), child_id FROM budgetchild
+              WHERE budget_id = :old.parent_id AND (child_id = :new.id OR child_id IN
+                (SELECT child_id FROM budgetchild WHERE budget_id = :new.id));
+          ELSE
+            UPDATE budgetchild SET budget_id = :new.parent_id WHERE 
+              budget_id = :old.parent_id AND (child_id = :new.id OR child_id IN
+                (SELECT child_id FROM budgetchild WHERE budget_id = :new.id));
+          END IF;
+        END IF;
+        INSERT INTO budgetchild(budget_id, child_id)
+          SELECT par.budget_id, ch.child_id FROM 
+           (SELECT budget_id FROM budgetchild WHERE child_id = :new.parent_id AND budget_id <> topid) par,
+           (SELECT child_id FROM budgetchild WHERE budget_id = :new.id UNION SELECT :new.id FROM dual) ch;
+      END IF;
+    ELSE
+      IF (:new.parent_id <> :new.id) THEN
+        INSERT INTO budgetchild(budget_id, child_id)
+          VALUES(:new.parent_id, :new.id);
+        FOR cur IN (SELECT child_id FROM budgetchild
+          WHERE budget_id = :new.id)
+        LOOP
+          INSERT INTO budgetchild(budget_id, child_id)
+            VALUES (:new.parent_id, cur.child_id);
+        END LOOP;
+        FOR cur IN (SELECT budget_id FROM budgetchild
+                    WHERE child_id = :new.parent_id)
+        LOOP
+          INSERT INTO budgetchild(budget_id, child_id)
+            VALUES (cur.budget_id, :new.id);
+          FOR cur1 IN (SELECT child_id FROM budgetchild
+            WHERE budget_id = :new.id)
+          LOOP
+            INSERT INTO budgetchild(budget_id, child_id)
+              VALUES (cur.budget_id, cur1.child_id);
+          END LOOP;
+        END LOOP;
+      END IF;
+    END IF;
+  ELSE
+    IF (:old.parent_id IS NOT NULL) THEN
+      DELETE FROM budgetchild WHERE budget_id = :new.id OR child_id = :new.id;
+    END IF;
+  END IF;
+END;
+26.02.20 12:15:36.692,main,INFO,ExecSql,Statements found: 6, done: 6
+26.02.20 12:15:36.693,main,INFO,ExecSql,Script: ./LOG/14007_zholokh_rts44_ezp.sql
+26.02.20 12:15:36.693,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14007, 'zholokh', 'Интеграция с РТС-44 по электроЗП', SYSDATE)
+26.02.20 12:15:36.697,main,INFO,ExecSql,Line 5: 
+ALTER TABLE PROTOCOL44CRITERION ADD ETPKEY VARCHAR(100)
+26.02.20 12:15:36.706,main,INFO,ExecSql,Line 7: 
+ALTER TABLE PROTOCOL44CRITERIONLINE ADD ETPKEY VARCHAR(100)
+26.02.20 12:15:36.714,main,INFO,ExecSql,Line 9: 
+ALTER TABLE OFFERDOC ADD COUNTRIESOFORIGIN_DECLARATION VARCHAR(4000)
+26.02.20 12:15:36.733,main,INFO,ExecSql,Statements found: 4, done: 4
+26.02.20 12:15:36.733,main,INFO,ExecSql,Script: ./LOG/14008_ddyldaev_fill_new_fields_in_contractexecdoc_factdoc_on_pg.sql
+26.02.20 12:15:36.734,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14008, 'ddyldaev', 'ЭД Сведения об исполнении контрактов, ЭД Факт поставки заполнение новых полей на PG', SYSDATE)
+26.02.20 12:15:36.737,main,INFO,ExecSql,Statements found: 1, done: 1
+26.02.20 12:15:36.737,main,INFO,ExecSql,Script: ./LOG/14009_ddyldaev_fill_recipient_in_claimdoc_on_pg.sql
+26.02.20 12:15:36.737,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14009, 'ddyldaev', 'Заполнение поля Получатель в ЭД Иск, Претензия на PG', SYSDATE)
+26.02.20 12:15:36.742,main,INFO,ExecSql,Statements found: 1, done: 1
+26.02.20 12:15:36.742,main,INFO,ExecSql,Script: ./LOG/14010_shakh_grantinvestment_industrycode_isactual.sql
+26.02.20 12:15:36.742,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14010, 'shakh', 'Справочник Субсидии и инвестиции, Отраслевые коды - новое поле "Актуальный"', SYSDATE)
+26.02.20 12:15:36.745,main,INFO,ExecSql,Line 6: 
+ALTER TABLE GRANTINVESTMENT add ACTUAL NUMERIC(1) default 1 not null constraint CK_GRANTINVESTMENT_ACTUAL check (ACTUAL in (0,1))
+26.02.20 12:15:37.468,main,INFO,ExecSql,Line 8: 
+ALTER TABLE INDUSTRYCODE add ACTUAL NUMERIC(1) default 1 not null constraint CK_INDUSTRYCODE_ACTUAL check (ACTUAL in (0,1))
+26.02.20 12:15:37.620,main,INFO,ExecSql,Statements found: 3, done: 3
+26.02.20 12:15:37.620,main,INFO,ExecSql,Scripts found: 11, done: 11
+26.02.20 12:19:10.413,main,INFO,PerformTrigger,377 triggers created
+26.02.20 14:08:26.617,main,INFO,Executer,SQLExecuter started up at Wed Feb 26 14:08:26 MSK 2020
+26.02.20 14:08:26.755,main,INFO,ConnectionFactory,Using database url="jdbc:oracle:thin:@172.28.176.11:1521:azk", user="STEND40_GZ_BELGOBL", pool size=150
+26.02.20 14:09:53.904,main,INFO,PerformTrigger,377 triggers dropped
+26.02.20 14:09:55.952,main,INFO,ExecSql,Script: ./LOG/13959_shakh_plannedaftersecondyear.sql
+26.02.20 14:09:55.989,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (13959, 'shakh', 'Закупка запланирована на третий или последующие годы', SYSDATE)
+26.02.20 14:09:56.002,main,INFO,ExecSql,Line 6: 
+ALTER TABLE PLAN3PURCHASEDOC ADD ISPLANNEDAFTERSECONDYEAR
+NUMERIC(1) DEFAULT 0 NOT NULL CONSTRAINT CK_P3PDOC_ISPLANAFTERSECYEAR CHECK(ISPLANNEDAFTERSECONDYEAR IN (0,1))
+26.02.20 14:10:13.491,main,INFO,ExecSql,Statements found: 2, done: 2
+26.02.20 14:10:13.491,main,INFO,ExecSql,Script: ./LOG/13962_ovt_add_request_quantity.sql
+26.02.20 14:10:13.491,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (13962, 'ovt', 'Добавление служебных счетчиков в ЭД Заявка на закупку', SYSDATE)
+26.02.20 14:10:13.495,main,INFO,ExecSql,Line 5: 
+ALTER TABLE requestdoc ADD DECLINE_IKT_QUANTITY numeric(15) default 0 not null
+26.02.20 14:10:13.557,main,INFO,ExecSql,Line 7: 
+ALTER TABLE requestdoc ADD DECLINE_COMISSION_QUANTITY numeric(15) default 0 not null
+26.02.20 14:10:13.588,main,INFO,ExecSql,Statements found: 3, done: 3
+26.02.20 14:10:13.588,main,INFO,ExecSql,Script: ./LOG/13963_shakh_conkpp.sql
+26.02.20 14:10:13.593,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (13963, 'shakh', 'Филиал в поле Исполнитель', SYSDATE)
+26.02.20 14:10:13.597,main,INFO,ExecSql,Line 6: 
+ALTER TABLE PLAN3PURCHASEDOC ADD CONKPP VARCHAR(20)
+26.02.20 14:10:13.622,main,INFO,ExecSql,Line 8: 
+ALTER TABLE PLAN3PURCHASEDOC ADD CONTRACTOR_DESCRIPTION VARCHAR(2000)
+26.02.20 14:10:13.648,main,INFO,ExecSql,Line 10: 
+UPDATE PLAN3PURCHASEDOC SET CONTRACTOR_DESCRIPTION = (SELECT DESCRIPTION FROM ORGFORM WHERE ORGFORM.ID=PLAN3PURCHASEDOC.CONTRACTOR_ID)
+26.02.20 14:11:07.854,main,INFO,ExecSql,Statements found: 4, done: 4
+26.02.20 14:11:07.855,main,INFO,ExecSql,Script: ./LOG/13964_ovt_delete_request_sysdates.sql
+26.02.20 14:11:07.855,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (13964, 'ovt', 'Удаление служебных полей в ЭД Заявка на закупку', SYSDATE)
+26.02.20 14:11:07.859,main,INFO,ExecSql,Line 5: 
+ALTER TABLE REQUESTDOC DROP COLUMN STATUS_APPROVAL_IKT_IN
+26.02.20 14:11:19.432,main,INFO,ExecSql,Line 7: 
+ALTER TABLE REQUESTDOC DROP COLUMN STATUS_APPROVAL_COMMISSION_IN
+26.02.20 14:11:26.207,main,INFO,ExecSql,Line 9: 
+ALTER TABLE REQUESTDOC DROP COLUMN STATUS_APPROVAL_GOVERNOR_IN
+26.02.20 14:11:32.753,main,INFO,ExecSql,Line 11: 
+ALTER TABLE REQUESTDOC DROP COLUMN STATUS_YO_IN
+26.02.20 14:11:39.280,main,INFO,ExecSql,Line 13: 
+ALTER TABLE REQUESTDOC DROP COLUMN STATUS_ORG_ACCEPTED_IN
+26.02.20 14:11:45.727,main,INFO,ExecSql,Statements found: 6, done: 6
+26.02.20 14:11:45.728,main,INFO,ExecSql,Script: ./LOG/13965_shakh_changepublisherorg.sql
+26.02.20 14:11:45.728,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (13965, 'shakh', 'Удаление обязательности для PUBLISHERORG', SYSDATE)
+26.02.20 14:11:45.732,main,INFO,ExecSql,Line 8: 
+ALTER TABLE NOTICEDOC MODIFY PUBLISHERORG_ID NUMERIC(15) NULL
+26.02.20 14:11:45.774,main,INFO,ExecSql,Statements found: 2, done: 2
+26.02.20 14:11:45.774,main,INFO,ExecSql,Script: ./LOG/14011_vaschilo_alter_fk_budgethildbudget_budget.sql
+26.02.20 14:11:45.775,main,INFO,ExecSql,Line 2: 
+INSERT INTO DbUpdate(Id, Author, Description, Update_Date)
+  VALUES (14011, 'vaschilo', 'constraint fk_budgethildbudget_budget добавление on delete cascade', SYSDATE)
+26.02.20 14:11:45.778,main,INFO,ExecSql,Line 6: 
+alter table BUDGETCHILD drop constraint fk_budgethildbudget_budget drop index
+26.02.20 14:11:45.784,main,INFO,ExecSql,Line 8: 
+ALTER TABLE BudgetChild ADD CONSTRAINT fk_budgethildbudget_budget FOREIGN KEY (child_id) REFERENCES budget(id) ON DELETE CASCADE
+26.02.20 14:11:45.820,main,INFO,ExecSql,Statements found: 3, done: 3
+26.02.20 14:11:45.820,main,INFO,ExecSql,Scripts found: 6, done: 6
+26.02.20 14:12:09.757,main,INFO,PerformTrigger,377 triggers created
+03.03.20 10:43:36.241,main,INFO,Executer,SQLExecuter started up at Tue Mar 03 10:43:36 MSK 2020
+03.03.20 10:43:36.341,main,INFO,ConnectionFactory,Using database url="jdbc:postgresql://172.28.176.11:5432/stend_gz_belgobl", user="postgres", pool size=150
+03.03.20 10:43:36.581,main,INFO,ExecSql,Script: ./ServiceScript/fill_request_quantity_fields.sql
+03.03.20 10:43:36.593,main,INFO,ExecSql,Line 5: 
+03.06.20 14:37:01.103,main,INFO,PerformTrigger,377 triggers created
+03.06.20 14:37:01.125,main,WARN,PerformTrigger,Table ACTUALIZATIONVIEW, having field with name VERSION, was not founded in RPLTABLE!
+03.06.20 14:37:01.126,main,WARN,PerformTrigger,Table PLAN2VIEWERIC_PLAN_INTERNAL, having field with name VERSION, was not founded in RPLTABLE!
+03.06.20 14:37:01.126,main,WARN,PerformTrigger,Table PLAN2VIEWERIC_PLAN, having field with name VERSION, was not founded in RPLTABLE!

@@ -59,7 +59,7 @@ public class ClientController {
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
 
-                            processModel.updateSP(inputLine.substring(10),out);
+                            processModel.executeSQLScript(inputLine.substring(10),out);
 
 
                         }
