@@ -23,10 +23,10 @@ public class StarterClient {
             serverIP = property.getProperty("server.ip");
             serverPort = Integer.parseInt(property.getProperty("server.port"));
 
-            System.out.println("client.name "+property.getProperty("client.name"));
-            System.out.println("server.port "+property.getProperty("server.port"));
-            System.out.println("server.ip "+property.getProperty("server.ip"));
-            log.debug("server.ip "+property.getProperty("server.ip"));
+            log.info("client.name "+property.getProperty("client.name"));
+            log.info("server.port "+property.getProperty("server.port"));
+            log.info("server.ip "+property.getProperty("server.ip"));
+
 
             ClientController clientController = new ClientController();
             clientController.startSocket(name, serverIP, serverPort);

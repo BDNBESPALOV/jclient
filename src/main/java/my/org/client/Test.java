@@ -3,14 +3,16 @@ package my.org.client;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
 
 
 public class Test {
 
-    public static void main(String [] args) throws IOException {
+    public static void main(String [] args) throws IOException, URISyntaxException {
 //        //патч AZK запокованный
 //        String patchAZKzip = "/u02/client_GZ.zip";
 //        //папка содержащия распакованный патч
@@ -42,30 +44,44 @@ public class Test {
 //            System.out.println(inputLine);
 //        }
 
-        String inputLine;
-        String line ;
+//        File f = new File("A:\\temp\\patch.zip");
+//        System.out.println(f.exists());
+//        System.out.println(f.isFile());
+//        System.out.println(f.canRead());
+//        System.out.println(f.canExecute());
+//        System.out.println(f.canWrite());
 
-        // Process p = Runtime.getRuntime().exec(pathUpdate);
+//      String outFile = "A:\\temp\\patch.zip.waitLoading";
+//        System.out.println("A:\\temp\\patch.zip".length());
+//        System.out.println(outFile);
+//
+//outFile = outFile.substring(0,17);
+//        System.out.println(outFile);
+       File file = new File("A:\\temp\\patch.zip"+".waitLoading");
+//        File file2 = new File("A:\\temp\\patch.zip.waitLoading".substring(0, 17));
+//        //new File(outFile.substring(0, 17)))
+        System.out.println(file.length());
 
-        Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
-       // Process p = Runtime.getRuntime().exec(new String[]{"cmd", "cd","c:/","&","type","pom.xml"});
-
-        InputStream in = p.getInputStream();
-
-        BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
-       /// OutputStream outputStream = p.getOutputStream();
-
-        /*в цикле считываем сообщения от SP */
-        while ((inputLine = inb.readLine()) != null) {
-            System.out.println("inputLine");
-            System.out.println(inputLine);
-
-        }
-        in.close();
-        inb.close();
-
-
-
+//          String login = "f_belgorod";
+//         String password = "E666T5fZ";
+//        Authenticator.setDefault(new Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(login, password.toCharArray());
+//            }
+//        });
+//        URL uri = new URL("https://bftcloud.bftcom.com/remote.php/webdav/belgorodskaya_obl/belgorodskaya_obl/!gz/!other/order.log.zip");
+////        File file1 = new File(uri);
+////        System.out.println(file1.exists());
+//
+//        URL url = new URL("https://bftcloud.bftcom.com/remote.php/webdav/!azk_update/!gz/!builds/!1.40.0/patch_1.40.0.293_p3_20200508.zip");
+//        File file3 = new File("https://bftcloud.bftcom.com/remote.php/webdav/!azk_update/!gz/!builds/!1.40.0/patch_1.40.0.293_p3_20200508.zip");
+//
+//        URLConnection connection = uri.openConnection();
+//
+//
+//        System.out.println(connection.getContentLength());
+//        System.out.println(file3.exists());
     }
 
 }

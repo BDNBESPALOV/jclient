@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
 
 public class ClientController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ClientController.class);
@@ -52,7 +53,11 @@ public class ClientController {
                         else if (inputLine.contains("accept file")){
 
                             System.out.println("accept file : " + inputLine);
-                            new UploadFile(initSocket(serverIP,serverPort));
+                            try {
+                                new UploadFile(initSocket(serverIP,serverPort));
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
 
                         }
 
