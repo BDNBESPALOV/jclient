@@ -5,6 +5,8 @@ import java.io.*;
 public class ProcessModel {
     private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
 
+    public String inController;
+
     public void killProcess(String pid){
         System.out.println("pid: "+pid);
         try {
@@ -56,7 +58,7 @@ public class ProcessModel {
         }
     }
 
-    public void executeSQLScript(String inController, PrintWriter outController) throws IOException {
+    public void executeSQLScript( PrintWriter outController) throws IOException {
         String inputLine;
         String line ;
 
@@ -70,15 +72,15 @@ public class ProcessModel {
         BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 
 
-        /*в цикле считываем сообщения от SP */
+        /*в цикле считываем сообщения от SPAdmin */
         while ((inputLine = inb.readLine()) != null) {
 
-            /*отправлять все ответы от SP */
+            /*отправлять все ответы от SPAdmin */
             outController.println(inputLine);
 
             if(inputLine.contains("Found")){
 
-                if (inController =="Y"){
+                if (inController == "Y"){
                     System.out.println("Пользователь ответил Да");
                     line = "Y" + "\n";
                     outputStream.write(line.getBytes());
