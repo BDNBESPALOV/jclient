@@ -304,3 +304,4 @@ ALTER TABLE BudgetChild ADD CONSTRAINT fk_budgethildbudget_budget FOREIGN KEY (c
 03.06.20 14:37:01.125,main,WARN,PerformTrigger,Table ACTUALIZATIONVIEW, having field with name VERSION, was not founded in RPLTABLE!
 03.06.20 14:37:01.126,main,WARN,PerformTrigger,Table PLAN2VIEWERIC_PLAN_INTERNAL, having field with name VERSION, was not founded in RPLTABLE!
 03.06.20 14:37:01.126,main,WARN,PerformTrigger,Table PLAN2VIEWERIC_PLAN, having field with name VERSION, was not founded in RPLTABLE!
+Found 234 script(s)

@@ -33,7 +33,7 @@ public class ClientController {
 
                         /*в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
-                            System.out.println("inputLine: " + inputLine);
+                            log.info("inputLine: " + inputLine);
 
                         /*проверяем, что от сервера пришла команда для исполнения */
                         if (inputLine.contains("Command:"))   {
@@ -52,7 +52,7 @@ public class ClientController {
                         /* проверяем, что от сервера пришла команда на загрузку патча */
                         else if (inputLine.contains("accept file")){
 
-                            System.out.println("accept file : " + inputLine);
+                            log.info("accept file : " + inputLine);
                             try {
                                 new UploadFile(initSocket(serverIP,serverPort));
                             } catch (NoSuchAlgorithmException e) {
@@ -63,7 +63,7 @@ public class ClientController {
 
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
-                            System.out.println("UpdateSP: " + inputLine);
+                            log.info("UpdateSP: " + inputLine);
                             new Thread( ()->{
                                 try {
                                     processModel.executeSQLScript(out);
@@ -73,7 +73,7 @@ public class ClientController {
                             }).start();
                             if (inputLine.length() > 10){
                                 processModel.inController = inputLine.substring(10);
-                                System.out.println("UpdateSP: " + processModel.inController);
+                                log.info("UpdateSP: " + processModel.inController);
 
                             }
 
