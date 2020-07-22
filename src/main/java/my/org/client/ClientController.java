@@ -64,7 +64,13 @@ public class ClientController {
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
                             System.out.println("UpdateSP: " + inputLine);
-                            processModel.executeSQLScript(out);
+                            new Thread( ()->{
+                                try {
+                                    processModel.executeSQLScript(out);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }).start();
                             if (inputLine.length() > 10){
                                 processModel.inController = inputLine.substring(10);
                                 System.out.println("UpdateSP: " + processModel.inController);

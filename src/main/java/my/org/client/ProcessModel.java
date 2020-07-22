@@ -73,29 +73,32 @@ public class ProcessModel {
 
 
         /*в цикле считываем сообщения от SPAdmin */
-        while ((inputLine = inb.readLine()) != null) {
+            while ((inputLine = inb.readLine()) != null) {
 
-            /*отправлять все ответы от SPAdmin */
-            outController.println(inputLine);
+                /*отправлять все ответы от SPAdmin */
+                outController.println(inputLine);
 
-            if(inputLine.contains("Found")){
+                if (inputLine.contains("Found")) {
 
-                if (inController == "Y"){
-                    System.out.println("Пользователь ответил Да");
-                    line = "Y" + "\n";
-                    outputStream.write(line.getBytes());
-                    outputStream.flush();
-                } else if(inController =="N"){
-                    line = "N" + "\n";
-                    System.out.println("Пользователь ответил Нет");
-                    outputStream.write(line.getBytes());
-                    outputStream.flush();
+                    if (inController == "Y") {
+                        System.out.println("Пользователь ответил Да");
+                        line = "Y" + "\n";
+                        outputStream.write(line.getBytes());
+                        outputStream.flush();
+                    } else if (inController == "N") {
+                        line = "N" + "\n";
+                        System.out.println("Пользователь ответил Нет");
+                        outputStream.write(line.getBytes());
+                        outputStream.flush();
+                    }
+
                 }
 
+                System.out.println(inputLine);
             }
 
-            System.out.println(inputLine);
-        }
+
+
     }
 
 }
