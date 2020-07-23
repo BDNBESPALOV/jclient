@@ -9,7 +9,7 @@ public class ProcessModel {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProcessModel.class);
     private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
 
-    public String inController;
+    public String inController = "-";
 
     public void killProcess(String pid){
         log.info("pid: "+pid);
