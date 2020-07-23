@@ -12,7 +12,7 @@ public class ProcessModel {
     public String inController;
 
     public void killProcess(String pid){
-        System.out.println("pid: "+pid);
+        log.info("pid: "+pid);
         try {
             Runtime.getRuntime().exec("kill -9 "+pid);
         } catch (IOException e) {
@@ -78,29 +78,34 @@ public class ProcessModel {
         BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 
 
-        /*в цикле считываем сообщения от SPAdmin */
+            /*в цикле считываем сообщения от SPAdmin */
+            boolean varTemp = true;
             while ((inputLine = inb.readLine()) != null) {
 
                 /*отправлять все ответы от SPAdmin */
                 outController.println(inputLine);
 
                 if (inputLine.contains("Found")) {
-
-                    if (inController == "Y") {
-                        log.info("Пользователь ответил Да");
-                        line = "Y" + "\n";
-                        outputStream.write(line.getBytes());
-                        outputStream.flush();
-                    } else if (inController == "N") {
-                        line = "N" + "\n";
-                        log.info("Пользователь ответил Нет");
-                        outputStream.write(line.getBytes());
-                        outputStream.flush();
+                    log.info("Начало деалога");
+                    while(varTemp) {
+                        if (inController == "Y") {
+                            log.info("Пользователь ответил Да");
+                            line = "Y" + "\n";
+                            outputStream.write(line.getBytes());
+                            outputStream.flush();
+                            varTemp = false;
+                        } else if (inController == "N") {
+                            line = "N" + "\n";
+                            log.info("Пользователь ответил Нет");
+                            outputStream.write(line.getBytes());
+                            outputStream.flush();
+                            varTemp = false;
+                        }
                     }
 
                 }
 
-                System.out.println(inputLine);
+                log.info(inputLine);
             }
 
 
