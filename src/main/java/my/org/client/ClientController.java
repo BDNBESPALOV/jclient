@@ -60,11 +60,9 @@ public class ClientController {
                             }
 
                         }
-
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
                             log.info("UpdateSP: " + inputLine);
-
                             /* проверка, что запрос содержит только команду на обновление  */
                             if (inputLine.length() <= 10){
                                 new Thread( ()->{
