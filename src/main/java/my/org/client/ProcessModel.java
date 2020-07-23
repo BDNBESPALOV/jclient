@@ -1,8 +1,11 @@
 package my.org.client;
 
+import org.slf4j.Logger;
+
 import java.io.*;
 
 public class ProcessModel {
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProcessModel.class);
     private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
 
     public String inController;
@@ -62,9 +65,11 @@ public class ProcessModel {
         String inputLine;
         String line ;
 
-       // Process p = Runtime.getRuntime().exec(pathUpdate);
+        /* Linux */
+        Process p = Runtime.getRuntime().exec(pathUpdate);
 
-        Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
+        /* Windows test */
+        // Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
 
         InputStream in = p.getInputStream();
         OutputStream outputStream = p.getOutputStream();
@@ -81,13 +86,13 @@ public class ProcessModel {
                 if (inputLine.contains("Found")) {
 
                     if (inController == "Y") {
-                        System.out.println("Пользователь ответил Да");
+                        log.info("Пользователь ответил Да");
                         line = "Y" + "\n";
                         outputStream.write(line.getBytes());
                         outputStream.flush();
                     } else if (inController == "N") {
                         line = "N" + "\n";
-                        System.out.println("Пользователь ответил Нет");
+                        log.info("Пользователь ответил Нет");
                         outputStream.write(line.getBytes());
                         outputStream.flush();
                     }

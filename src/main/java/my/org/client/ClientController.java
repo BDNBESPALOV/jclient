@@ -73,7 +73,7 @@ public class ClientController {
                             }).start();
                             if (inputLine.length() > 10){
                                 processModel.inController = inputLine.substring(10);
-                                log.info("UpdateSP: " + processModel.inController);
+                                log.info("processModel.inController " + processModel.inController);
 
                             }
 
