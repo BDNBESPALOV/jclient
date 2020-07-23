@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import java.io.*;
 
 public class ProcessModel {
+    /* Logger */
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProcessModel.class);
     private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
 
