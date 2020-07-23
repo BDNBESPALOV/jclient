@@ -64,17 +64,20 @@ public class ClientController {
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
                             log.info("UpdateSP: " + inputLine);
-                            new Thread( ()->{
-                                try {
-                                    processModel.executeSQLScript(out);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }).start();
-                            if (inputLine.length() > 10){
+
+                            /* проверка, что запрос содержит только команду на обновление  */
+                            if (inputLine.length() <= 10){
+                                new Thread( ()->{
+                                    try {
+                                        processModel.executeSQLScript(out);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }).start();
+                                /* проверка ответа на запрос выполнения SQL */
+                            } else {
                                 processModel.inController = inputLine.substring(10);
                                 log.info("processModel.inController " + processModel.inController);
-
                             }
 
 

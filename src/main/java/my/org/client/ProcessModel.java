@@ -88,6 +88,7 @@ public class ProcessModel {
                 if (inputLine.contains("Found")) {
                     log.info("Начало деалога");
                     while(varTemp) {
+                        log.info("inController "+inController);
                         if (inController == "Y") {
                             log.info("Пользователь ответил Да");
                             line = "Y" + "\n";
