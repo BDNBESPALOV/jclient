@@ -89,13 +89,13 @@ public class ProcessModel {
                     log.info("Начало деалога");
                     while(varTemp) {
                         log.info("inController "+inController);
-                        if (inController == "Y") {
+                        if (inController.equals("Y")) {
                             log.info("Пользователь ответил Да");
                             line = "Y" + "\n";
                             outputStream.write(line.getBytes());
                             outputStream.flush();
                             varTemp = false;
-                        } else if (inController == "N") {
+                        } else if (inController.equals("N")) {
                             line = "N" + "\n";
                             log.info("Пользователь ответил Нет");
                             outputStream.write(line.getBytes());
