@@ -3,6 +3,7 @@ package my.org.client;
 import org.slf4j.Logger;
 
 import java.io.*;
+import java.util.Date;
 
 public class ProcessModel {
     /* Logger */
@@ -83,7 +84,7 @@ public class ProcessModel {
                 /*отправлять все ответы от SPAdmin */
                 outController.println(inputLine);
                 if (inputLine.contains("Found")) {
-                    log.info("Начало деалога");
+                    log.info("Начало деалога"+new Date());
                     while(varTemp) {
                         log.info("inController: "+inController+" varTemp: "+varTemp);
                         if (inController.equals("Y")) {
