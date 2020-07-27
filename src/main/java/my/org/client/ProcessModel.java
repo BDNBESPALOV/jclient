@@ -77,18 +77,15 @@ public class ProcessModel {
 
         BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 
-
             /*в цикле считываем сообщения от SPAdmin */
             boolean varTemp = true;
             while ((inputLine = inb.readLine()) != null) {
-
                 /*отправлять все ответы от SPAdmin */
                 outController.println(inputLine);
-
                 if (inputLine.contains("Found")) {
                     log.info("Начало деалога");
                     while(varTemp) {
-                        log.info("inController "+inController);
+                        log.info("inController: "+inController+" varTemp: "+varTemp);
                         if (inController.equals("Y")) {
                             log.info("Пользователь ответил Да");
                             line = "Y" + "\n";
