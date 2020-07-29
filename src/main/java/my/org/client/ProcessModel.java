@@ -69,7 +69,7 @@ public class ProcessModel {
 
         /* Linux */
        //Process p = Runtime.getRuntime().exec(pathUpdate);
-        Process p = Runtime.getRuntime().exec(new String[]{"bush", "cd","/u02/1.40.0.285/1.40.0.285/SQL/","DBUpdate.sh"});
+         Process p = Runtime.getRuntime().exec(new String[]{"bush", "cd","/u02/1.40.0.285/1.40.0.285/SQL/","DBUpdate.sh"});
         /* Windows test */
         // Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
 
