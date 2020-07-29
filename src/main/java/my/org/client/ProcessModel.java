@@ -83,7 +83,7 @@ public class ProcessModel {
             boolean varTemp = true;
             while ((inputLine = inb.readLine()) != null) {
                 /*отправлять все ответы от SPAdmin */
-                outController.print(inputLine);
+                outController.println(inputLine);
                 if (inputLine.contains("Found")) {
                     log.info("Начало деалога"+new Date());
                     while(varTemp) {
