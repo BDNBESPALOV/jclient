@@ -104,7 +104,7 @@ public class ProcessModel {
 
                 }
 
-                log.info(inputLine);
+                log.info("inputLine" + inputLine);
             }
 
 
