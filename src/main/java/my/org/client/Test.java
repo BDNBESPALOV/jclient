@@ -12,7 +12,32 @@ import java.util.zip.ZipEntry;
 
 public class Test {
 
+    public void testOutFile() throws IOException {
+
+
+            Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
+            InputStream in = p.getInputStream();
+            OutputStream outputStream = p.getOutputStream();
+
+            BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+
+            /*в цикле считываем сообщения от SPAdmin */
+            boolean varTemp = true;
+            String inputLine;
+
+            while ((inputLine = inb.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            in.close();
+            inb.close();
+
+
+
+    }
+
     public static void main(String [] args) throws IOException, URISyntaxException {
+        new Test().testOutFile();
+
 //        //патч AZK запокованный
 //        String patchAZKzip = "/u02/client_GZ.zip";
 //        //папка содержащия распакованный патч
@@ -57,10 +82,10 @@ public class Test {
 //
 //outFile = outFile.substring(0,17);
 //        System.out.println(outFile);
-       File file = new File("A:\\temp\\patch.zip"+".waitLoading");
+  //     File file = new File("A:\\temp\\patch.zip"+".waitLoading");
 //        File file2 = new File("A:\\temp\\patch.zip.waitLoading".substring(0, 17));
 //        //new File(outFile.substring(0, 17)))
-        System.out.println(file.length());
+     //   System.out.println(file.length());
 
 //          String login = "f_belgorod";
 //         String password = "E666T5fZ";

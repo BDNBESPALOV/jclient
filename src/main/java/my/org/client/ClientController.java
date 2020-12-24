@@ -1,5 +1,6 @@
 package my.org.client;
 
+import my.org.client.dbupdate.InController;
 import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
@@ -14,11 +15,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class ClientController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ClientController.class);
+    private final ProcessModel processModel = new ProcessModel();
 
     public void startSocket( String name, String serverIP,
             int serverPort)  {
             String inputLine;
-            ProcessModel processModel = new ProcessModel();
+
 //        new Thread(
 //                () -> {
                     try(
@@ -33,11 +35,11 @@ public class ClientController {
 
                         /*в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
-                            log.info("inputLine: " + inputLine);
+                            log.info("Сообщения от сервера: " + inputLine);
 
                         /*проверяем, что от сервера пришла команда для исполнения */
                         if (inputLine.contains("Command:"))   {
-                            inputLine = inputLine.substring(8,inputLine.length());
+                            inputLine = inputLine.substring(8);
                             Runtime.getRuntime().exec(inputLine);
 
                         /*проверяем, что от сервера пришла команда для monitoringProcess */
@@ -62,25 +64,39 @@ public class ClientController {
                         }
                         /* проверяем, что от сервера пришла команда на обновление SP */
                         else if (inputLine.contains("UpdateSP: ")){
-                            log.info("UpdateSP: " + inputLine);
+                            log.info("от сервера пришла команда на обновление SP: " + inputLine);
                             /* проверка, что запрос содержит только команду на обновление  */
                             if (inputLine.length() <= 10){
-                                new Thread( ()->{
+                               // new Thread( ()->{
                                     try {
                                         processModel.executeSQLScript(out);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                }).start();
+                              //  }).start();
                                 /* проверка ответа на запрос выполнения SQL */
                             } else {
-                                processModel.inController = inputLine.substring(10);
-                                log.info("processModel.inController " + processModel.inController);
+                                InController.setInController(inputLine.substring(10));
+                                log.info("проверка ответа на запрос выполнения SQL: " + InController.getInController() );
+
                             }
-
-
+                        }
+                        /* команды когда скрипт завершается с ошибкой */
+                        if(inputLine.contains("FAILED_Break")){
+                            processModel.setFAILEDCommand("B");
                         }
 
+                        if(inputLine.contains("FAILED_Continue")){
+                            processModel.setFAILEDCommand("C");
+                        }
+
+                        if(inputLine.contains("FAILED_Rollback")){
+                            processModel.setFAILEDCommand("R");
+                        }
+
+                        if(inputLine.contains("FAILED_RRollback")){
+                            processModel.setFAILEDCommand("RR");
+                        }
 
                         }
 

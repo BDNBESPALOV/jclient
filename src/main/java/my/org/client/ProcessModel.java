@@ -1,5 +1,6 @@
 package my.org.client;
 
+
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -8,11 +9,31 @@ import java.util.Date;
 public class ProcessModel {
     /* Logger */
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProcessModel.class);
-    private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
+    //private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
 
-    public String inController = "-";
+
+    /* Linux */
+    // Process p = Runtime.getRuntime().exec(pathUpdate);
+    //Process p = Runtime.getRuntime().exec("./DBUpdate.sh",null,new File("/u02/1.40.0.285/1.40.0.285/SQL"));
+    /* Windows test */
+    Process p;
+
+    {
+        try {
+            p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    InputStream in = p.getInputStream();
+    OutputStream outputStream = p.getOutputStream();
+
+
+
 
     public void killProcess(String pid){
+
         log.info("pid: "+pid);
         try {
             Runtime.getRuntime().exec("kill -9 "+pid);
@@ -34,7 +55,7 @@ public class ProcessModel {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
 
-            int index=0;
+            int index = 0;
             String line;
             while ((line = reader.readLine()) != null) {
 
@@ -56,25 +77,13 @@ public class ProcessModel {
             process.waitFor();
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     public void executeSQLScript( PrintWriter outController) throws IOException {
         String inputLine;
-        String line ;
-
-        /* Linux */
-        // Process p = Runtime.getRuntime().exec(pathUpdate);
-        Process p = Runtime.getRuntime().exec("./DBUpdate.sh",null,new File("/u02/1.40.0.285/1.40.0.285/SQL"));
-        /* Windows test */
-        // Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
-
-        InputStream in = p.getInputStream();
-        OutputStream outputStream = p.getOutputStream();
 
         BufferedReader inb = new BufferedReader(new InputStreamReader(in,"UTF-8"));
 
@@ -83,32 +92,32 @@ public class ProcessModel {
             while ((inputLine = inb.readLine()) != null) {
                 /*отправлять все ответы от SPAdmin */
                 outController.println(inputLine);
-                if (inputLine.contains("Found")) {
-                    log.info("Начало деалога"+new Date());
-                    while(varTemp) {
-                        log.info("inController: "+inController+" varTemp: "+varTemp);
-                        if (inController.equals("Y")) {
-                            log.info("Пользователь ответил Да");
-                            line = "Y" + "\n";
-                            outputStream.write(line.getBytes());
-                            outputStream.flush();
-                            varTemp = false;
-                        } else if (inController.equals("N")) {
-                            line = "N" + "\n";
-                            log.info("Пользователь ответил Нет");
-                            outputStream.write(line.getBytes());
-                            outputStream.flush();
-                            varTemp = false;
-                        }
-                    }
 
-                }
 
-                log.info("inputLine" + inputLine);
+
+                log.info(inputLine);
             }
+            log.info(inputLine);
+            in.close();
+            inb.close();
+           // outController.close();
+
+    }
 
 
-
+    public void setFAILEDCommand(String command){
+        try {
+            outputStream.write(command.getBytes());
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
