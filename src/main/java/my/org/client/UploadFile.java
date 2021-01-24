@@ -33,7 +33,7 @@ public class UploadFile {
 
 
     byte  [] byteArray;
-    UploadFile(Socket socket) throws NoSuchAlgorithmException {
+    public UploadFile(Socket socket) throws NoSuchAlgorithmException {
         File tempFolder = new File("tempPatchFolder");
         if (!tempFolder.exists()){
             tempFolder.mkdir();

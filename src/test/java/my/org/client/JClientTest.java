@@ -1,24 +1,24 @@
 //package my.org.client;
 //
-//import org.junit.Test;
+//import org.junit.TestStart;
 //
 //import static org.junit.Assert.*;
 //
 //public class JClientTest {
 //
-//    @Test
+//    @TestStart
 //    public void getStatus() {
 //    }
 //
-//    @Test
+//    @TestStart
 //    public void setStatus() {
 //    }
 //
-//    @Test
+//    @TestStart
 //    public void getCommand() {
 //    }
 //
-//    @Test
+//    @TestStart
 //    public void setCommand() {
 //    }
 //}

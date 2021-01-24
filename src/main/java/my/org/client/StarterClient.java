@@ -14,7 +14,6 @@ public class StarterClient {
         Properties property = new Properties();
         String name,serverIP;
         int serverPort;
-
         try {
             /*A:\temp*/
             fis = new FileInputStream("Client.properties");
@@ -26,10 +25,9 @@ public class StarterClient {
             log.info("client.name "+property.getProperty("client.name"));
             log.info("server.port "+property.getProperty("server.port"));
             log.info("server.ip "+property.getProperty("server.ip"));
-
-
             my.org.client.ClientController clientController = new my.org.client.ClientController();
-            clientController.startSocket(name, serverIP, serverPort);
+       //     clientController.openSocket(name, serverIP, serverPort);
+
         }catch (IOException e){
             System.err.println("ERROR: Файл свойств отсуствует!");
         }
