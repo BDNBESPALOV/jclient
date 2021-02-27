@@ -41,9 +41,6 @@ public class ProcessModel {
     InputStream in = p.getInputStream();
     OutputStream outputStream = p.getOutputStream();
 
-
-
-
     public void killProcess(String pid){
 
         log.info("pid: "+pid);
