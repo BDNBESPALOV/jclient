@@ -10,22 +10,34 @@ public class ProcessModel {
     /* Logger */
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ProcessModel.class);
     //private final String pathUpdate = "/u02/1.40.0.285/1.40.0.285/SQL/DBUpdate.sh";
-
-
-    /* Linux */
-    // Process p = Runtime.getRuntime().exec(pathUpdate);
-    //Process p = Runtime.getRuntime().exec("./DBUpdate.sh",null,new File("/u02/1.40.0.285/1.40.0.285/SQL"));
-    /* Windows test */
+    private final String pathUpdate = "ls";
     Process p;
-
     {
-        try {
-            p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
+          if(System.getProperty("os.name").contains("Windows")) {
+              /* Windows test */
+              {
+                  try {
+                      p = Runtime.getRuntime().exec(new String[]{"cmd", "/c", "type", "order.log"});
+                  } catch (IOException e) {
+                      e.printStackTrace();
+                  }
+              }
+          } else {
+
+              /* Linux */
+              try {
+                  p = Runtime.getRuntime().exec(pathUpdate);
+              } catch (IOException e) {
+                  e.printStackTrace();
+              }
+              //Process p = Runtime.getRuntime().exec("./DBUpdate.sh",null,new File("/u02/1.40.0.285/1.40.0.285/SQL"));
+
+
+
+          }
+
+}
     InputStream in = p.getInputStream();
     OutputStream outputStream = p.getOutputStream();
 
