@@ -1,6 +1,5 @@
-package my.org.client.execution;
+package execution_JSON;
 
-import my.org.client.ProcessModel;
 import org.slf4j.Logger;
 
 import java.io.IOException;

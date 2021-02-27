@@ -1,4 +1,4 @@
-package my.org.client.execution;
+package execution_JSON;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,11 +16,16 @@ public class Command implements Exec{
 
     @Override
     public void doProcess(String command /* команда для исполнения */ ) {
-        try {
-            Runtime.getRuntime().exec(command);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+            try {
+                Runtime.getRuntime().exec(command);
+            }catch (NullPointerException e){
+                System.out.println("Передано нулеве значение в doProcess(String command) ");
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+
     }
 
     @Override

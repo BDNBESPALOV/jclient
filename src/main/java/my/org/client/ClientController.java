@@ -1,6 +1,7 @@
 package my.org.client;
 
-import my.org.client.dbupdate.InController;
+
+import execution_JSON.MainExecList;
 import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
@@ -11,8 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.nio.channels.SocketChannel;
-import java.security.NoSuchAlgorithmException;
 
 public class ClientController {
 
@@ -41,6 +40,8 @@ public class ClientController {
                         /* в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
                             log.info("Сообщения от сервера: " + inputLine);
+
+                            new MainExecList().deserializer(inputLine,out);
 
                             /*проверяем, что от сервера пришла команда для исполнения */
                             /*===================================================================*/

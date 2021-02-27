@@ -26,7 +26,7 @@ public class StarterClient {
             log.info("server.port "+property.getProperty("server.port"));
             log.info("server.ip "+property.getProperty("server.ip"));
             my.org.client.ClientController clientController = new my.org.client.ClientController();
-       //     clientController.openSocket(name, serverIP, serverPort);
+            clientController.openSocket(name, serverIP, serverPort);
 
         }catch (IOException e){
             System.err.println("ERROR: Файл свойств отсуствует!");

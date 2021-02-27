@@ -1,4 +1,4 @@
-//package my.org.client.temp;
+//package temp;
 //
 //public class Address {
 //    String street;

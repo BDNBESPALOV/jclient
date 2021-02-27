@@ -1,4 +1,4 @@
-package my.org.client.temp;
+package temp;
 
 
 import java.io.*;

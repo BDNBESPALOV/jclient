@@ -1,4 +1,4 @@
-package my.org.client.execution;
+package execution_JSON;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,6 +54,7 @@ public class MonitoringProcess implements Exec{
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
