@@ -1,4 +1,5 @@
-FROM bespalovdn/my_centos_jdk
+FROM centos:7
+RUN yum install java-1.8.0-openjdk -y
 RUN yum install git -y
 RUN yum install maven -y
 RUN yum install make -y
