@@ -1,0 +1,4 @@
+FROM bespalovdn/my_centos_jdk
+RUN yum install git -y
+RUN yum install maven -y
+RUN yum install make -y
