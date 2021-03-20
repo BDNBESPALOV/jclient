@@ -36,7 +36,11 @@ public class Cat {
 //
 //        System.out.println( sh2.arr.get(0).myGo() + "\n"+sh2.arr.get(0).myGo(sh2.name));
 
-        System.out.println(  System.getProperty("os.name"));
+        //System.out.println(  System.getProperty("os.name"));
+        String a = "os.name";
+        System.out.println(
+                (a+2+2+"22").length()
+        );
 
     }
 }
