@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 
@@ -25,8 +26,10 @@ public class Command implements Exec{
     public void doProcess(String command /* команда для исполнения */ ) {
 
             try {
-                Runtime.getRuntime().exec(command);
+                OutputStream ou =   Runtime.getRuntime().exec(command).getOutputStream();
+
                 log.info("команда для исполнения: "+ command);
+                log.info("вывод: "+ ou);
             }catch (NullPointerException e){
                 log.info("Передано нулеве значение в doProcess(String command) ");
             }
