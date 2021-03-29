@@ -29,7 +29,7 @@ public class Command implements Exec{
                 OutputStream ou =   Runtime.getRuntime().exec(command).getOutputStream();
 
                 log.info("команда для исполнения: "+ command);
-                log.info("вывод: "+ ou);
+                log.info("вывод: "+ ou.toString());
             }catch (NullPointerException e){
                 log.info("Передано нулеве значение в doProcess(String command) ");
             }
