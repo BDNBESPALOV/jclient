@@ -1,8 +1,11 @@
 package execution_JSON;
 
+import org.slf4j.Logger;
+
 import java.io.*;
 
 public class UpdateSP implements Exec{
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(UpdateSP.class);
     @Override
     public void doProcess() {
 
@@ -29,10 +32,11 @@ public class UpdateSP implements Exec{
                 while ((inputLine = inb.readLine()) != null) {
                     /*отправлять все ответы от SPAdmin */
                     out.println(inputLine);
+                    log.info("ответы от SPAdmin: "+inputLine);
                 }
                 inb.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                log.info("ERROR: "+e);
             }
 
     }

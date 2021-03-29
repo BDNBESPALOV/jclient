@@ -15,7 +15,7 @@ public class KillProcess implements Exec{
         try {
             Runtime.getRuntime().exec("kill -9 "+pid);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("ERROR: "+e);
         }
     }
 

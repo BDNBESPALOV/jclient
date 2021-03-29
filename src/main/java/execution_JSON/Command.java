@@ -1,9 +1,16 @@
 package execution_JSON;
 
+import my.org.client.ProcessModel;
+import org.slf4j.Logger;
+import org.slf4j.Marker;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
 
 public class Command implements Exec{
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(Command.class);
     @Override
     public void doProcess() {
 
@@ -20,10 +27,10 @@ public class Command implements Exec{
             try {
                 Runtime.getRuntime().exec(command);
             }catch (NullPointerException e){
-                System.out.println("Передано нулеве значение в doProcess(String command) ");
+                log.info("Передано нулеве значение в doProcess(String command) ");
             }
             catch (IOException e) {
-                e.printStackTrace();
+                log.info("ERROR: " , e);
             }
 
     }

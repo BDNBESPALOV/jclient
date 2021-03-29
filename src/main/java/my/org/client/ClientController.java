@@ -68,7 +68,7 @@ public class ClientController {
 //                            try {
 //                                new UploadFile(initSocket(serverIP,serverPort));
 //                            } catch (NoSuchAlgorithmException e) {
-//                                e.printStackTrace();
+//                                log.info("ERROR: "+e);
 //                            }
 //
 //                        }
@@ -81,7 +81,7 @@ public class ClientController {
 //                                    try {
 //                                        processModel.executeSQLScript(out);
 //                                    } catch (IOException e) {
-//                                        e.printStackTrace();
+//                                        log.info("ERROR: "+e);
 //                                    }
 //                              //  }).start();
 //                                /* проверка ответа на запрос выполнения SQL */
@@ -118,7 +118,7 @@ public class ClientController {
 
 
                     }  catch (IOException e) {
-                        e.printStackTrace();
+                        log.info("ERROR: "+e);
                     }
 //                }
 //        ).start();
@@ -131,8 +131,9 @@ public class ClientController {
 
         } catch (ConnectException e) {
           socket = initSocket(serverIP,serverPort);
+            log.info("ERROR: "+e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("ERROR: "+e);
         }
         return socket;
     }

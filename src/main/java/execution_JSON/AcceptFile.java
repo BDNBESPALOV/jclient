@@ -1,6 +1,7 @@
 package execution_JSON;
 
 import my.org.client.UploadFile;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
 public class AcceptFile implements Exec{
-
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(AcceptFile.class);
 
     @Override
     public void doProcess() {
@@ -20,7 +21,7 @@ public class AcceptFile implements Exec{
         try {
             new UploadFile(initSocket(serverIP,serverPort));
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.info("ERROR: " , e);
         }
     }
 
@@ -46,8 +47,9 @@ public class AcceptFile implements Exec{
 
         } catch (ConnectException e) {
             socket = initSocket(serverIP,serverPort);
+            log.info("ERROR: " , e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info("ERROR: " , e);
         }
         return socket;
     }

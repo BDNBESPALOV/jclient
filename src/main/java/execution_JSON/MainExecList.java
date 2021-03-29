@@ -1,11 +1,13 @@
 package execution_JSON;
 
 import flexjson.JSONDeserializer;
+import org.slf4j.Logger;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class MainExecList {
-
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MainExecList.class);
     public int n ;
     public String command ;
     public ArrayList<Exec> arr ;
@@ -14,8 +16,8 @@ public class MainExecList {
         this.arr = new ArrayList<Exec>();
         JSONDeserializer<MainExecList> der = new JSONDeserializer<>();
         MainExecList result =  der.deserialize(json);
-        System.out.println( "JSON: "+ json);
-        System.out.println( "toString: "+ result.toString());
+        log.info( "JSON: "+ json);
+        log.info( "toString: "+ result.toString());
 
         result.arr.get(0).doProcess();
         result.arr.get(0).doProcess(result.n);

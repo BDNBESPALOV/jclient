@@ -1,11 +1,14 @@
 package execution_JSON;
 
+import org.slf4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class MonitoringProcess implements Exec{
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MonitoringProcess.class);
     @Override
     public void doProcess(int i) {
 
@@ -52,7 +55,7 @@ public class MonitoringProcess implements Exec{
 
 
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            log.info("ERROR: "+e);
         }
 
     }
