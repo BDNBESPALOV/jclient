@@ -26,7 +26,7 @@ public class Command implements Exec{
     public void doProcess(String command /* команда для исполнения */ ) {
 
             try {
-                OutputStream ou =   Runtime.getRuntime().exec(command).getOutputStream();
+                Process ou =   Runtime.getRuntime().exec(command);
 
                 log.info("команда для исполнения: "+ command);
                 log.info("вывод: "+ ou.toString());
