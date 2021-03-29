@@ -26,6 +26,7 @@ public class Command implements Exec{
 
             try {
                 Runtime.getRuntime().exec(command);
+                log.info("команда для исполнения: " , command);
             }catch (NullPointerException e){
                 log.info("Передано нулеве значение в doProcess(String command) ");
             }
