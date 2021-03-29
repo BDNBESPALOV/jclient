@@ -30,7 +30,7 @@ public class Command implements Exec{
 
                 log.info("команда для исполнения: "+ command);
 
-                log.info("вывод: "+ ou.exitValue());
+                log.info("вывод: "+ ou.info().toString());
             } catch ( IllegalThreadStateException e){
                 log.info("ERROR: " , e);
             }
