@@ -4,9 +4,7 @@ import my.org.client.ProcessModel;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.logging.Level;
 
 public class Command implements Exec{
@@ -26,11 +24,16 @@ public class Command implements Exec{
     public void doProcess(String command /* команда для исполнения */ ) {
 
             try {
-                Process ou =   Runtime.getRuntime().exec(command);
+                Process process =   Runtime.getRuntime().exec(command);
 
                 log.info("команда для исполнения: "+ command);
 
-                log.info("вывод: "+ ou.info().toString());
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()));
+                String line = null;
+                while ((line = in.readLine()) != null) {
+                    log.info("ответ exec : "+ line);
+                }
             } catch ( IllegalThreadStateException e){
                 log.info("ERROR: " , e);
             }
