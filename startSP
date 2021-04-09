@@ -1,0 +1,5 @@
+#!/bin/sh
+cd /u01/SP/1.40.0.285W/
+./startsrv
+cd /u01/SP/1.40.0.285W/apache-tomcat-8.5.65/bin
+./startup.sh

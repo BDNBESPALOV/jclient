@@ -11,10 +11,13 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: azk_db
       PGDATE: /u01/pgdata
+     # POSTGRES_HOST_AUTH_METHOD:
     restart: always
   app_c:
     image: bespalovdn/my_jclient:v2
     container_name: my_jclient_v2
+    ports:
+      - 8080:8080
     volumes:
       - ../../SP:/u01/SP
     environment:
