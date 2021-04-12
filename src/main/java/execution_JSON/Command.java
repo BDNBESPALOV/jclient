@@ -15,19 +15,19 @@ public class Command implements Exec{
             try {
                 Process process =   Runtime.getRuntime().exec(command);
 
-                log.info("команда для исполнения: "+ command);
+                log.info("command to execute: "+ command);
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(process.getInputStream()));
                 String line = null;
                 while ((line = in.readLine()) != null) {
-                    log.info("ответ exec : "+ line);
+                    log.info("exec response : "+ line);
                 }
             } catch ( IllegalThreadStateException e){
                 log.info("ERROR: " , e);
             }
             catch (NullPointerException e){
-                log.info("Передано нулеве значение в doProcess(String command) ");
+                log.info("Passed zero value in doProcess(String command) ");
             }
             catch (IOException e) {
                 log.info("ERROR: " , e);
