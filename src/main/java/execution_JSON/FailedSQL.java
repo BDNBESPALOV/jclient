@@ -8,18 +8,10 @@ import java.io.PrintWriter;
 
 public class FailedSQL implements Exec {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(FailedSQL.class);
-    @Override
-    public void doProcess() {
 
-    }
 
     @Override
-    public void doProcess(int i) {
-
-    }
-
-    @Override
-    public void doProcess(String command) {
+    public void doProcess(int pid,String command,PrintWriter out) {
 
             try {
                 Process p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});
@@ -33,8 +25,5 @@ public class FailedSQL implements Exec {
 
     }
 
-    @Override
-    public void doProcess(PrintWriter out) {
 
-    }
 }

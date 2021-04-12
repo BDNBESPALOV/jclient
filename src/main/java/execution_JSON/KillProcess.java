@@ -10,7 +10,7 @@ public class KillProcess implements Exec{
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(KillProcess.class);
 
     @Override
-    public void doProcess(int pid) {
+    public void doProcess(int pid,String command,PrintWriter out) {
         log.info("pid: "+pid);
         try {
             Runtime.getRuntime().exec("kill -9 "+pid);
@@ -19,18 +19,5 @@ public class KillProcess implements Exec{
         }
     }
 
-    @Override
-    public void doProcess(String str) {
 
-    }
-
-    @Override
-    public void doProcess(PrintWriter out) {
-
-    }
-
-    @Override
-    public void doProcess() {
-
-    }
 }

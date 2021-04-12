@@ -6,23 +6,10 @@ import java.io.*;
 
 public class UpdateSP implements Exec{
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(UpdateSP.class);
-    @Override
-    public void doProcess() {
 
-    }
 
     @Override
-    public void doProcess(int i) {
-
-    }
-
-    @Override
-    public void doProcess(String str) {
-
-    }
-
-    @Override
-    public void doProcess(PrintWriter out) {
+    public void doProcess(int pid,String str,PrintWriter out) {
         String inputLine;
             try {
                 Process   p = Runtime.getRuntime().exec(new String[]{"cmd", "/c","type","order.log"});

@@ -10,18 +10,10 @@ import java.util.logging.Level;
 public class Command implements Exec{
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(Command.class);
-    @Override
-    public void doProcess() {
 
-    }
 
     @Override
-    public void doProcess(int i) {
-
-    }
-
-    @Override
-    public void doProcess(String command /* команда для исполнения */ ) {
+    public void doProcess(int pid,String command,PrintWriter out) {
 
             try {
                 Process process =   Runtime.getRuntime().exec(command);
@@ -46,8 +38,5 @@ public class Command implements Exec{
 
     }
 
-    @Override
-    public void doProcess(PrintWriter out) {
 
-    }
 }

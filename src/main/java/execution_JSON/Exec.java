@@ -3,8 +3,5 @@ package execution_JSON;
 import java.io.PrintWriter;
 
 public interface Exec {
-    void doProcess();
-    void doProcess(int i);
-    void doProcess(String str);
-    void doProcess(PrintWriter out);
+    void doProcess(int pid,String str,PrintWriter out);
 }

@@ -9,27 +9,13 @@ public class CreateFileSH implements Exec{
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(CreateFileSH.class);
     private String command;
 
-    @Override
-    public void doProcess() {
-
-    }
 
     @Override
-    public void doProcess(int i) {
-
-    }
-
-    @Override
-    public void doProcess(String str) {
-
+    public void doProcess(int pid,String str,PrintWriter out) {
         if (str == null){
             log.info("Передано нулеве значение в doProcess(String str) ");
         } else this.command = str;
 
-    }
-
-    @Override
-    public void doProcess(PrintWriter out) {
 
         try {
             Process process =   Runtime.getRuntime().exec(command);

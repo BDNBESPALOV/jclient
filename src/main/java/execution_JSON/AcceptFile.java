@@ -14,7 +14,7 @@ public class AcceptFile implements Exec{
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(AcceptFile.class);
 
     @Override
-    public void doProcess() {
+    public void doProcess(int pid,String str,PrintWriter out) {
         Properties property = new Properties();
         int serverPort = Integer.parseInt(property.getProperty("server.port"));
         String serverIP = property.getProperty("server.ip");
@@ -25,20 +25,7 @@ public class AcceptFile implements Exec{
         }
     }
 
-    @Override
-    public void doProcess(int i) {
 
-    }
-
-    @Override
-    public void doProcess(String str) {
-
-    }
-
-    @Override
-    public void doProcess(PrintWriter out) {
-
-    }
 
     private Socket initSocket(String serverIP, int serverPort){
         Socket socket = null;

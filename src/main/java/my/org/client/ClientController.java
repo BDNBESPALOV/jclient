@@ -39,7 +39,7 @@ public class ClientController {
 
                         /* в цикле считываем сообщения от сервера */
                         while ((inputLine = in.readLine()) != null) {
-                            log.info("Сообщения от сервера: " + inputLine);
+                            log.info("Server messages: " + inputLine);
 
                             new MainExecList().deserializer(inputLine,out);
 
