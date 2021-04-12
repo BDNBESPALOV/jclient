@@ -13,9 +13,8 @@ public class Command implements Exec{
     public void doProcess(int pid,String command,PrintWriter out) {
 
             try {
-                Process process =   Runtime.getRuntime().exec(command);
-
                 log.info("command to execute: "+ command);
+                Process process =   Runtime.getRuntime().exec(command);
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(process.getInputStream()));
