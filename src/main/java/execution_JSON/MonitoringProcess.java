@@ -29,6 +29,7 @@ public class MonitoringProcess implements Exec{
             while ((line = reader.readLine()) != null) {
 
                 if (line.charAt(0) == ' '){
+                    log.info("-----------------------");
                     line = line.substring(1);
                     log.info(line);
                 }
