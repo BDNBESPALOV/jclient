@@ -19,6 +19,7 @@ public class MainExecList {
         MainExecList result =  der.deserialize(json);
         log.info( "JSON: "+ json);
         log.info( "toString: "+ result.toString());
+        log.info( result.arr.get(0).toString());
 
         result.arr.get(0).doProcess(pid,command,printWriter);
 
