@@ -10,8 +10,6 @@ import java.io.PrintWriter;
 public class MonitoringProcess implements Exec{
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MonitoringProcess.class);
 
-
-
     @Override
     public void doProcess(int pid,String str,PrintWriter out) {
             log.info("exec MonitoringProcess ...");
@@ -31,6 +29,7 @@ public class MonitoringProcess implements Exec{
 
                 if (line.charAt(0) == ' '){
                     line = line.substring(1);
+                    log.info(line);
                 }
 
                 index = line.indexOf(" ");

@@ -9,7 +9,6 @@ public class Command implements Exec{
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(Command.class);
 
-
     @Override
     public void doProcess(int pid,String command,PrintWriter out) {
 
