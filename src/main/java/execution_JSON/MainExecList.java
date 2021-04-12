@@ -21,12 +21,13 @@ public class MainExecList {
         log.info( "toString: "+ result.toString());
         log.info( result.arr.get(0).toString());
 
-        result.arr.get(0).doProcess(pid,command,printWriter);
+        result.arr.get(0).doProcess(result.pid,result.command,printWriter);
+        log.info("pid: "+pid+" command: "+command+" arr: "+arr);
 
     }
 
     public String toString() {
-        return "n = "+pid+" arg = "+command+" arr "+arr;
+        return "pid: "+pid+" command: "+command+" arr: "+arr;
     }
 
 }
