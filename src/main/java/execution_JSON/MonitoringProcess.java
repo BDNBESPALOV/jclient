@@ -13,6 +13,7 @@ public class MonitoringProcess implements Exec{
     @Override
     public void doProcess(int pid,String str,PrintWriter out) {
             log.info("exec MonitoringProcess ...");
+            log.info("PrintWriter: "+out.toString());
         try {
 
             ProcessBuilder processBuilder = new ProcessBuilder();
