@@ -28,6 +28,7 @@ public class Command implements Exec{
             }
             catch (NullPointerException e){
                 log.info("Passed zero value in doProcess(String command) ");
+                log.info("ERROR: " , e);
             }
             catch (IOException e) {
                 log.info("ERROR: " , e);
