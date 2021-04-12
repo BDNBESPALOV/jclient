@@ -17,7 +17,7 @@ public class MonitoringProcess implements Exec{
         try {
 
             ProcessBuilder processBuilder = new ProcessBuilder();
-            processBuilder.command("bash", "-c", "ps -e --format='pid cmd'|grep java");
+            processBuilder.command("sh", "-c", "ps -e --format='pid cmd'|grep java");
 
             Process process = processBuilder.start();
 
