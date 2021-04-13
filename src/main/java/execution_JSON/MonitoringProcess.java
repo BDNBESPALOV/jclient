@@ -1,5 +1,6 @@
 package execution_JSON;
 
+import execution_JSON.rmi.ClientRMI;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -12,6 +13,8 @@ public class MonitoringProcess implements Exec{
 
     @Override
     public void doProcess(int pid,String str,PrintWriter out) {
+        ClientRMI clientRMI = new ClientRMI();
+
             log.info("exec MonitoringProcess ...");
             log.info("PrintWriter: "+out.toString());
         try {
@@ -31,6 +34,7 @@ public class MonitoringProcess implements Exec{
                 if (line.charAt(0) == ' '){
                     log.info("-----------------------");
                     line = line.substring(1);
+                    clientRMI.getClientRMI(line);
                     log.info(line);
                 }
 
